@@ -120,27 +120,3 @@ typedef NSUInteger CDVMediaType;
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error;
 
 @end
-
-@interface CameraPickerOverlay : UIView
-
-@property (strong) JPSCameraButton* cameraButton;
-@property (strong) UIButton* cancelButton;
-@property (weak, nonatomic) UIImagePickerController* delegate;
-@property (strong) UIImageView* overlayImageView;
-@property NSString* url;
-
-- (instancetype)initWithDelegate:(UIImagePickerController*)delegate url:(NSString*)url frame:(CGRect)frame;
-
-- (void)addCameraButton;
-
-- (void)addCancelButton;
-
-- (void)addOverlayImageView;
-
-- (void)takePicture;
-
-- (void)sliderChanged:(UISlider*)sender;
-
-- (void)dismiss;
-
-@end
