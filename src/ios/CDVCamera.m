@@ -81,7 +81,7 @@ static NSString* toBase64(NSData* data) {
     pictureOptions.saveToPhotoAlbum = [[command argumentAtIndex:9 withDefault:@(NO)] boolValue];
     pictureOptions.popoverOptions = [command argumentAtIndex:10 withDefault:nil];
     pictureOptions.cameraDirection = [[command argumentAtIndex:11 withDefault:@(UIImagePickerControllerCameraDeviceRear)] unsignedIntegerValue];
-    pictureOptions.overlayImageURL = [command argumentAtIndex:12 withDefault:nil];
+    pictureOptions.overlayImageName = [command argumentAtIndex:12 withDefault:nil];
 
     pictureOptions.popoverSupported = NO;
     pictureOptions.usesGeolocation = NO;
@@ -767,15 +767,12 @@ static NSString* toBase64(NSData* data) {
         cameraPicker.mediaTypes = mediaArray;
     }
 
-     if (pictureOptions.overlayImageURL) {
+     if (pictureOptions.overlayImageName) {
         // creating overlayView
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSURL *url = [NSURL URLWithString:pictureOptions.overlayImageURL];
-            NSData *data = [NSData dataWithContentsOfURL:url];
-            UIImage *img = [[UIImage alloc] initWithData:data];
-            
-            UIImageView *overlayImage = [[UIImageView alloc] initWithImage:img];
+            UIImage *image = [UIImage imageNamed:pictureOptions.overlayImageName];
+            UIImageView *overlayImage = [[UIImageView alloc] initWithImage:image];
             overlayImage.frame = cameraPicker.view.frame;
             
             // Now the image will have been loaded and decoded and is ready to rock for the main thread
