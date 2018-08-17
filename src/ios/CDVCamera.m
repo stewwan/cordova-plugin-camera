@@ -767,17 +767,21 @@ static NSString* toBase64(NSData* data) {
         cameraPicker.mediaTypes = mediaArray;
     }
 
-    if (pictureOptions.overlayImageURL) {
-        pictureOptions.overlayImageURL = @"https://preview.ibb.co/maYU2e/image2.png";
+     if (pictureOptions.overlayImageURL) {
         // creating overlayView
-        NSURL *url = [NSURL URLWithString:pictureOptions.overlayImageURL];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [[UIImage alloc] initWithData:data];
-        UIImageView *overlayImage = [[UIImageView alloc] initWithImage:img];
-        overlayImage.frame = cameraPicker.view.frame;
         
-        [cameraPicker.cameraOverlayView addSubview:overlayImage];
-        [cameraPicker setCameraOverlayView:overlayImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSURL *url = [NSURL URLWithString:pictureOptions.overlayImageURL];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *img = [[UIImage alloc] initWithData:data];
+            
+            UIImageView *overlayImage = [[UIImageView alloc] initWithImage:img];
+            overlayImage.frame = cameraPicker.view.frame;
+            
+            // Now the image will have been loaded and decoded and is ready to rock for the main thread
+            [cameraPicker.cameraOverlayView addSubview:overlayImage];
+            [cameraPicker setCameraOverlayView:overlayImage];
+        });
     }
 
     return cameraPicker;
